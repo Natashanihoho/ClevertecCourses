@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.clevertec'
+version '1.0-SNAPSHOT'
+
+ext {
+    javaVersion = 16
+    runner = project.properties['runner'] ?: "Console"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+jar {
+    //gradle build -Prunner=Console/File/Web
+    println "$project.ext.runner"
+    manifest {
+        def jars = configurations.runtimeClasspath.files.collect { "lib/$it.name" }
+        attributes 'Main-Class': "ru.clevertec.gordievich.$project.ext.runner" + "Runner",
+                'Class-Path': jars.join(' ')
+    }
+}
+
+task copyAllDependencies(type: Copy) {
+    from(configurations.runtimeClasspath.files)
+    into("$buildDir/libs/lib")
+}
+
+jar.dependsOn copyAllDependencies
+
+
