@@ -32,6 +32,29 @@ task copyAllDependencies(type: Copy) {
     into("$buildDir/libs/lib")
 }
 
+task downloadFromGitHub(type: FileDownloader) {
+    sourceUrl = 'https://raw.githubusercontent.com/Natashanihoho/Clevertec/master/receipt.txt'
+    target = new File('src/main/resources/receiptFromGit.txt')
+}
+
+class FileDownloader extends DefaultTask {
+    @Input
+    String sourceUrl
+
+    @OutputFile
+    File target
+
+    @TaskAction
+    void download() {
+        try {
+            ant.get(src: sourceUrl, dest: target)
+        } catch(Exception e) {
+            println e
+        }
+    }
+}
+
+classes.dependsOn downloadFromGitHub
 jar.dependsOn copyAllDependencies
 
 
