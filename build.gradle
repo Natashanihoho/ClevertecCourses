@@ -6,8 +6,12 @@ group 'ru.clevertec'
 version '1.0-SNAPSHOT'
 
 ext {
-    javaVersion = 16
     runner = project.properties['runner'] ?: "Console"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 repositories {
@@ -54,7 +58,6 @@ class FileDownloader extends DefaultTask {
     }
 }
 
-classes.dependsOn downloadFromGitHub
-jar.dependsOn copyAllDependencies
-
+jar.dependsOn downloadFromGitHub
+downloadFromGitHub.dependsOn(copyAllDependencies, processResources)
 
