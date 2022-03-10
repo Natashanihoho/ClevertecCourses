@@ -1,13 +1,18 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'custom-download'
 }
 
 group 'ru.clevertec'
 version '1.0-SNAPSHOT'
 
 ext {
-    javaVersion = 16
     runner = project.properties['runner'] ?: "Console"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 repositories {
@@ -15,46 +20,29 @@ repositories {
 }
 
 dependencies {
+
 }
 
 jar {
     //gradle build -Prunner=Console/File/Web
-    println "$project.ext.runner"
-    manifest {
-        def jars = configurations.runtimeClasspath.files.collect { "lib/$it.name" }
-        attributes 'Main-Class': "ru.clevertec.gordievich.$project.ext.runner" + "Runner",
-                'Class-Path': jars.join(' ')
+    def files = configurations.runtimeClasspath.files
+    doFirst {
+        println "$project.ext.runner"
+        manifest {
+            def jars = files.collect { "lib/$it.name" }
+            attributes 'Main-Class': "ru.clevertec.gordievich.$project.ext.runner" + "Runner",
+                    'Class-Path': jars.join(' ')
+        }
     }
-}
-
-task copyAllDependencies(type: Copy) {
-    from(configurations.runtimeClasspath.files)
-    into("$buildDir/libs/lib")
-}
-
-task downloadFromGitHub(type: FileDownloader) {
-    sourceUrl = 'https://raw.githubusercontent.com/Natashanihoho/Clevertec/master/receipt.txt'
-    target = new File('src/main/resources/receiptFromGit.txt')
-}
-
-class FileDownloader extends DefaultTask {
-    @Input
-    String sourceUrl
-
-    @OutputFile
-    File target
-
-    @TaskAction
-    void download() {
-        try {
-            ant.get(src: sourceUrl, dest: target)
-        } catch(Exception e) {
-            println e
+    doLast {
+        copy {
+            from(files)
+            into("$buildDir/libs/lib")
         }
     }
 }
 
-classes.dependsOn downloadFromGitHub
-jar.dependsOn copyAllDependencies
+jar.dependsOn downloadFromGitHub
+downloadFromGitHub.dependsOn processResources
 
 
