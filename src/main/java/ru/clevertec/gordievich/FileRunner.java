@@ -1,13 +1,10 @@
 package ru.clevertec.gordievich;
 
-import ru.clevertec.gordievich.service.Interpreter;
-import ru.clevertec.gordievich.service.ReceiptService;
-import ru.clevertec.gordievich.service.StoreFactory;
+import ru.clevertec.gordievich.service.*;
 import ru.clevertec.gordievich.shop.Store;
 import ru.clevertec.gordievich.exceptions.InvalidDataFormat;
 import ru.clevertec.gordievich.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.exceptions.UnknownIdException;
-import ru.clevertec.gordievich.service.InterpreterImpl;
 
 import java.io.*;
 
@@ -20,7 +17,8 @@ public class FileRunner {
     private static String[] fileArgs;
 
     public static void main(String[] args) throws IOException, UnknownIdException, NotEnoughProductsException, InvalidDataFormat {
-        Store store = StoreFactory.fileStore(stockProductsFile);
+        Validator validator = new Validator(stockProductsFile);
+        Store store = StoreFactory.fileStore(validator.checkData());
 
         try(BufferedReader reader = new BufferedReader(new FileReader(orderFile))) {
             String argsLine = reader.readLine();

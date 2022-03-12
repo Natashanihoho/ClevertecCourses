@@ -1,0 +1,13 @@
+2;Popcorn;2.10;20;true
+5;Biscuit;1.48;20;true
+7;Chocolate;3.10;20;false
+10;Marshmallow;1.48;20;false
+11;Waffle;2.63;20;true
+12;Brownie;1.79;20;false
+14;Eclair;1.90;20;false
+16;Macaroon;5.52;20;false
+100;Cake;18.65;20;false
+17;Marmalade;2.70;20;false
+18;Lemonade;1.62;20;true
+19;Juice;3.00;20;false
+20;Coke;2.50;20;false
