@@ -48,7 +48,7 @@ public final class StoreFactory {
 
         try(Stream<String> lines = Files.lines(Path.of(path))) {
             lines.forEach(line -> {
-                String[] params = line.split("-");
+                String[] params = line.split(";");
                 int id = Integer.parseInt(params[0].trim());
                 String description = params[1].trim();
                 double price = Double.parseDouble(params[2].trim());
