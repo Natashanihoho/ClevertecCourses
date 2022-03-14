@@ -14,7 +14,7 @@ public class Validator {
     private final String PRICE_REGEX = "^[1-9]\\d?\\.\\d\\d$|^100.00$";
     private final String COUNT_REGEX = "^[1-9]$|^1\\d$|^20$";
 
-    private final String invalidDataFile = "src/main/resources/invalidData.txt";
+    private final String invalidDataFilePath = "src/main/resources/invalidData.txt";
     private final String sourceFilePath;
 
     private StringBuilder invalidDataBuilder = new StringBuilder();
@@ -36,7 +36,7 @@ public class Validator {
             });
         }
 
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(invalidDataFile))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(invalidDataFilePath))) {
            writer.write(invalidDataBuilder.toString());
         }
 
