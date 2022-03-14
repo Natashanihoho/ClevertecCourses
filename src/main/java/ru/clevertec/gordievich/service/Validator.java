@@ -1,51 +1,49 @@
 package ru.clevertec.gordievich.service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Validator {
 
-    private static final String ID_REGEX = "^[1-9][0-9]?$|^100$";
-    private static final String NAME_REGEX = "^[A-Z][a-z]{2,29}$";
-    private static final String PRICE_REGEX = "^[1-9][0-9]?\\.[0-9][0-9]$|^100.00$";
-    private static final String COUNT_REGEX = "^[1-9]$|^1[0-9]$|^20$";
+    private final String ID_REGEX = "^[1-9]\\d?$|^100$";
+    private final String NAME_REGEX = "^[A-Z][a-z]{2,29}$";
+    private final String PRICE_REGEX = "^[1-9]\\d?\\.\\d\\d$|^100.00$";
+    private final String COUNT_REGEX = "^[1-9]$|^1\\d$|^20$";
 
     private final String invalidDataFile = "src/main/resources/invalidData.txt";
-    private final String validDataFile = "src/main/resources/validData.txt";
-    private final String sourceFile;
+    private final String sourceFilePath;
 
-    private StringBuilder validDataBuilder = new StringBuilder();
     private StringBuilder invalidDataBuilder = new StringBuilder();
+    private List<String> correctPositionsList = new ArrayList<>();
 
-    public Validator(String sourceFile) {
-        this.sourceFile = sourceFile;
+    public Validator(String sourceFilePath) {
+        this.sourceFilePath = sourceFilePath;
     }
 
-    public String checkData() throws IOException {
-        try(BufferedReader reader = new BufferedReader(new FileReader(sourceFile))) {
-            while (reader.ready()) {
-                String line = reader.readLine();
-                System.out.println(line);
-                System.out.println(isCorrectPosition(line));
+    public List<String> getCorrectPositions() throws IOException {
+
+        try(Stream<String> lines = Files.lines(Path.of(sourceFilePath))) {
+            lines.forEach(line -> {
                 if(isCorrectPosition(line)) {
-                    validDataBuilder.append(line + "\n");
+                    correctPositionsList.add(line);
                 } else {
                     invalidDataBuilder.append(line + "\n");
                 }
-            }
-        }
-
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(validDataFile))) {
-            writer.write(validDataBuilder.toString());
+            });
         }
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(invalidDataFile))) {
-            writer.write(invalidDataBuilder.toString());
+           writer.write(invalidDataBuilder.toString());
         }
 
-        return validDataFile;
+        return correctPositionsList;
     }
 
-    public boolean isCorrectPosition(String position) {
+    private boolean isCorrectPosition(String position) {
         String[] split = position.split(";");
         String id = split[0];
         String name = split[1];

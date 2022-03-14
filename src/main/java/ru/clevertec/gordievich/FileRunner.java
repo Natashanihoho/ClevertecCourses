@@ -18,7 +18,7 @@ public class FileRunner {
 
     public static void main(String[] args) throws IOException, UnknownIdException, NotEnoughProductsException, InvalidDataFormat {
         Validator validator = new Validator(stockProductsFile);
-        Store store = StoreFactory.fileStore(validator.checkData());
+        Store store = StoreFactory.fileStore(validator.getCorrectPositions());
 
         try(BufferedReader reader = new BufferedReader(new FileReader(orderFile))) {
             String argsLine = reader.readLine();
@@ -33,6 +33,5 @@ public class FileRunner {
             }
         };
         receiptService.writeReceipt(receipt);
-
     }
 }
