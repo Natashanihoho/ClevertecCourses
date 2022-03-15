@@ -5,8 +5,8 @@
                 FL 33160
           Tel: 37529-234-6375
 
-Cashier: Meryl Streep    DATE: 2022-03-14
-                         TIME: 09:46:01
+Cashier: Meryl Streep    DATE: 2022-03-15
+                         TIME: 08:13:10
 -----------------------------------------
 ID | DESCRIPTION | PRICE | NUMBER | TOTAL
 -----------------------------------------
