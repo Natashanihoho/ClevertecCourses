@@ -1,6 +1,7 @@
 package ru.clevertec.gordievich.shop;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum DiscountCard {
 
@@ -21,11 +22,10 @@ public enum DiscountCard {
         this.discount = discount;
     }
 
-    public static DiscountCard getDiscountByCard(String name) {
+    public static Optional<DiscountCard> getDiscountByCard(String name) {
         return Arrays.stream(DiscountCard.values())
                 .filter(x -> x.name().equals(name.toUpperCase()))
-                .findFirst()
-                .orElse(CARD_NOT_DEFINED);
+                .findFirst();
     }
 
     public int getDiscount() {
