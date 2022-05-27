@@ -12,6 +12,7 @@ public class Validator {
 
     private final String ID_REGEX = "^[1-9]\\d?$|^100$";
     private final String NAME_REGEX = "^[A-Z][a-z]{2,29}$|^[А-я][а-я]{2,29}$";
+   //private final String NAME_REGEX = "^[A-Z][a-z]{2,29}$";
     private final String PRICE_REGEX = "^[1-9]\\d?\\.\\d\\d$|^100\\.00$";
     private final String COUNT_REGEX = "^[1-9]$|^1\\d$|^20$";
 
