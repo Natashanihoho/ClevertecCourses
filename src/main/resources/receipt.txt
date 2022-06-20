@@ -5,8 +5,8 @@
                 FL 33160
           Tel: 37529-234-6375
 
-Cashier: Meryl Streep    DATE: 2022-03-15
-                         TIME: 14:30:59
+Cashier: Will Smith      DATE: 2022-06-20
+                         TIME: 16:59:24
 -----------------------------------------
 ID | DESCRIPTION | PRICE | NUMBER | TOTAL
 -----------------------------------------

@@ -1,5 +1,6 @@
 package ru.clevertec.gordievich;
 
+import ru.clevertec.gordievich.handler.InterpreterProxy;
 import ru.clevertec.gordievich.service.*;
 import ru.clevertec.gordievich.shop.Store;
 import ru.clevertec.gordievich.exceptions.InvalidDataFormat;
@@ -23,8 +24,11 @@ public class FileRunner {
             String argsLine = reader.readLine();
             fileArgs = argsLine.split(" ");
         }
-        Interpreter interpreter = new InterpreterImpl();
-        String receipt = interpreter.interpret(fileArgs);
+        /*Interpreter interpreter = new InterpreterImpl();
+        String receipt = interpreter.interpret(fileArgs);*/
+
+        Interpreter interpreterProxy = InterpreterProxy.getProxyInstance();
+        String receipt = interpreterProxy.interpret(fileArgs);
 
         ReceiptService receiptService = rec -> {
             try(FileWriter fileWriter = new FileWriter(PropertiesUtil.get("RECEIPT_FILE_PATH"))) {
