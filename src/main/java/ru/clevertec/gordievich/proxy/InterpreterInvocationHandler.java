@@ -1,4 +1,4 @@
-package ru.clevertec.gordievich.handler;
+package ru.clevertec.gordievich.proxy;
 
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -26,6 +26,7 @@ public class InterpreterInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         Gson parser = new Gson();
+
         Object invoke = method.invoke(interpreter, args);
 
         if (method.getName().equals(INTERPRET)) {
@@ -35,8 +36,10 @@ public class InterpreterInvocationHandler implements InvocationHandler {
             }
             String result = EMPTY_STRING;
             if (invoke != null) {
-                result = parser.toJson(invoke);
+                //result = parser.toJson(invoke);
+                result = (String) invoke;
             }
+
             logger.info("{} args={}", method.getName(), arguments);
             logger.info("{} result={}", method.getName(), result);
         }

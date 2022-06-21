@@ -102,7 +102,6 @@ public class InterpreterImpl implements Interpreter {
             position.setDiscount(fullPrice * (double) discountPercentForFive / 100);
             return position.getDiscount();
         } else if(discountCard.isPresent()) {
-            System.out.println("isPresent");
             position.setDiscount(fullPrice * (double) discountCard.get().getDiscount() / 100);
             return position.getDiscount();
         }
