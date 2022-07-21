@@ -2,17 +2,18 @@ package ru.clevertec.gordievich.service;
 
 import ru.clevertec.gordievich.entity.Position;
 import ru.clevertec.gordievich.entity.Product;
+import ru.clevertec.gordievich.exceptions.InvalidDataFormat;
 import ru.clevertec.gordievich.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.exceptions.UnknownIdException;
 import ru.clevertec.gordievich.shop.DiscountCard;
 import ru.clevertec.gordievich.shop.Store;
-import ru.clevertec.gordievich.exceptions.InvalidDataFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class InterpreterImpl implements Interpreter {
@@ -22,7 +23,7 @@ public class InterpreterImpl implements Interpreter {
 
     private List<Position> positions = new ArrayList<>();
     private StringBuilder stringBuilder = new StringBuilder();
-    private DiscountCard discountCard = DiscountCard.CARD_NOT_DEFINED;
+    private Optional<DiscountCard> discountCard = Optional.empty();
 
     @Override
     public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, InvalidDataFormat {
@@ -62,6 +63,7 @@ public class InterpreterImpl implements Interpreter {
                 throw new InvalidDataFormat("Invalid data format");
             }
         }
+
     }
 
     private void calculateEachPosition() {
@@ -99,8 +101,9 @@ public class InterpreterImpl implements Interpreter {
         if (product.isSpecialOffer() && position.getRequiredNumber() >= 5) {
             position.setDiscount(fullPrice * (double) discountPercentForFive / 100);
             return position.getDiscount();
-        } else if(discountCard != DiscountCard.CARD_NOT_DEFINED) {
-            position.setDiscount(fullPrice * (double) discountCard.getDiscount() / 100);
+        } else if(discountCard.isPresent()) {
+            System.out.println("isPresent");
+            position.setDiscount(fullPrice * (double) discountCard.get().getDiscount() / 100);
             return position.getDiscount();
         }
         return discountValue;

@@ -10,6 +10,7 @@ import ru.clevertec.gordievich.exceptions.UnknownIdException;
 import ru.clevertec.gordievich.service.InterpreterImpl;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ConsoleRunner {
 
@@ -20,5 +21,8 @@ public class ConsoleRunner {
 
         ReceiptService receiptService = rec -> System.out.println(rec);
         receiptService.writeReceipt(receipt);
+
+
     }
+
 }
