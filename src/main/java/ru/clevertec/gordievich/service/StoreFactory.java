@@ -42,22 +42,25 @@ public final class StoreFactory {
         return store;
     }
 
-    public static Store fileStore(String path) throws IOException {
+    public static Store fileStore(List<String> correctPositionsList) throws IOException {
         Store store = Store.getInstance();
         List<Product> stockProducts = new ArrayList<>();
 
-        try(Stream<String> lines = Files.lines(Path.of(path))) {
-            lines.forEach(line -> {
-                String[] params = line.split("-");
-                int id = Integer.parseInt(params[0].trim());
-                String description = params[1].trim();
-                double price = Double.parseDouble(params[2].trim());
-                int number = Integer.parseInt(params[3].trim());
-                boolean isSpecialOffer = Boolean.parseBoolean(params[4].trim());
-                stockProducts.add(new Product(id, description, price, number, isSpecialOffer));
-            });
-        }
+        correctPositionsList.stream()
+                .forEach(line -> {
+                    String[] params = line.split(";");
+                    int id = Integer.parseInt(params[0].trim());
+                    String description = params[1].trim();
+                    double price = Double.parseDouble(params[2].trim());
+                    int number = Integer.parseInt(params[3].trim());
+                    boolean isSpecialOffer = Boolean.parseBoolean(params[4].trim());
+                    stockProducts.add(new Product(id, description, price, number, isSpecialOffer));
+                });
 
+        for (String s:
+             correctPositionsList) {
+            System.out.println(s);
+        }
         store.loadProducts(stockProducts);
 
         return store;
