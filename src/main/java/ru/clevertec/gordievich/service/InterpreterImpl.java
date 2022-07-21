@@ -1,5 +1,6 @@
 package ru.clevertec.gordievich.service;
 
+import ru.clevertec.gordievich.aspect.annotation.Log;
 import ru.clevertec.gordievich.entity.Position;
 import ru.clevertec.gordievich.entity.Product;
 import ru.clevertec.gordievich.exceptions.InvalidDataFormat;
@@ -25,6 +26,7 @@ public class InterpreterImpl implements Interpreter {
     private StringBuilder stringBuilder = new StringBuilder();
     private Optional<DiscountCard> discountCard = Optional.empty();
 
+    @Log
     @Override
     public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, InvalidDataFormat {
         buildReceiptTitle(store.getCashiers());
@@ -102,7 +104,6 @@ public class InterpreterImpl implements Interpreter {
             position.setDiscount(fullPrice * (double) discountPercentForFive / 100);
             return position.getDiscount();
         } else if(discountCard.isPresent()) {
-            System.out.println("isPresent");
             position.setDiscount(fullPrice * (double) discountCard.get().getDiscount() / 100);
             return position.getDiscount();
         }

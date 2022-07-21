@@ -4,12 +4,9 @@ import ru.clevertec.gordievich.entity.Product;
 import ru.clevertec.gordievich.shop.Store;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public final class StoreFactory {
 
@@ -57,10 +54,6 @@ public final class StoreFactory {
                     stockProducts.add(new Product(id, description, price, number, isSpecialOffer));
                 });
 
-        for (String s:
-             correctPositionsList) {
-            System.out.println(s);
-        }
         store.loadProducts(stockProducts);
 
         return store;
