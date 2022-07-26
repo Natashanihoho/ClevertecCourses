@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.*;
 
 @NoArgsConstructor(access = PRIVATE)
-public class ReceiptServiceImpl implements ReceiptService{
+public class ReceiptServiceImpl implements ReceiptService {
 
     private static final ReceiptServiceImpl INSTANCE = new ReceiptServiceImpl();
     private static final DiscountCardDao discountCardDao = DiscountCardDao.getInstance();
@@ -90,29 +90,18 @@ public class ReceiptServiceImpl implements ReceiptService{
                 discount = position.getFullPrice() * (double) discountCard.get().getDiscountPercent() / 100;
             }
             totalDiscounts.add(discount);
+            totalAmounts.add(position.getFullPrice() - discount);
+            receipt.append(
+                    NORMAL_FIELD.formatted(
+                            position.getProduct().getId(),
+                            position.getProduct().getDescription(),
+                            position.getProduct().getPrice(),
+                            position.getRequiredNumber(),
+                            position.getFullPrice() - discount
+                    )
+            );
             if (discount != 0) {
-                totalAmounts.add(position.getFullPrice() - discount);
-                receipt.append(
-                        DISCOUNT_FIELD.formatted(
-                                position.getProduct().getId(),
-                                position.getProduct().getDescription(),
-                                position.getProduct().getPrice(),
-                                position.getRequiredNumber(),
-                                position.getFullPrice() - discount,
-                                -discount
-                        )
-                );
-            } else {
-                totalAmounts.add(position.getFullPrice());
-                receipt.append(
-                        NORMAL_FIELD.formatted(
-                                position.getProduct().getId(),
-                                position.getProduct().getDescription(),
-                                position.getProduct().getPrice(),
-                                position.getRequiredNumber(),
-                                position.getFullPrice()
-                        )
-                );
+                receipt.append(DISCOUNT_FIELD.formatted(-discount));
             }
         }
         Double totalDiscount = totalDiscounts.stream()

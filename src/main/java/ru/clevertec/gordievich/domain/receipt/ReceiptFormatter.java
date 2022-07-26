@@ -21,7 +21,6 @@ public final class ReceiptFormatter {
             """;
 
     public static final String DISCOUNT_FIELD = """
-            %-4d %-13s %-7.2f %-8d %-6.2f
                                       discount %.2f
             """;
 
