@@ -20,4 +20,6 @@ public class ProductMapper implements Function<ResultSet, Product> {
             throw new IllegalArgumentException("Impossible to map resultSet to Product", e);
         }
     }
+
+
 }

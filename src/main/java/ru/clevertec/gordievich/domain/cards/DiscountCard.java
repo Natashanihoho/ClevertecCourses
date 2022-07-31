@@ -9,6 +9,6 @@ import lombok.ToString;
 @Builder
 public class DiscountCard {
 
-    private String name;
+    private String cardName;
     private int discountPercent;
 }

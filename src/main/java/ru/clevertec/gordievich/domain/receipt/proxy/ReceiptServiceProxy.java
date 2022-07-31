@@ -1,5 +1,7 @@
 package ru.clevertec.gordievich.domain.receipt.proxy;
 
+import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
+import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
 import ru.clevertec.gordievich.domain.receipt.ReceiptService;
 import ru.clevertec.gordievich.domain.receipt.ReceiptServiceImpl;
@@ -21,7 +23,7 @@ public class ReceiptServiceProxy implements ReceiptService {
     }
 
     @Override
-    public String interpret(String[] args) throws UnknownIdException {
+    public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, DaoException {
         return interpreterProxy.interpret(args);
     }
 }

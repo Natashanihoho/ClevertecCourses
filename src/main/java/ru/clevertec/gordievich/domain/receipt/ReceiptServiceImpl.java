@@ -6,6 +6,7 @@ import ru.clevertec.gordievich.domain.cards.DiscountCardDao;
 import ru.clevertec.gordievich.domain.products.Product;
 import ru.clevertec.gordievich.domain.products.ProductDao;
 import ru.clevertec.gordievich.infrastructure.aspect.annotation.CustomLog;
+import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
 
@@ -29,7 +30,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @CustomLog
     @Override
-    public String interpret(String[] args) throws UnknownIdException {
+    public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, DaoException {
         String title = title(List.of("Liam Neeson", "Meryl Streep", "Kate Winslet", "Will Smith"));
         List<Position> positions = addPositionsToList(args);
         String receipt = receipt(positions, discountCard(args));
@@ -48,10 +49,16 @@ public class ReceiptServiceImpl implements ReceiptService {
         return Arrays.stream(argsLine)
                 .filter(isCard())
                 .findFirst()
-                .flatMap(card -> discountCardDao.findByName(card.toUpperCase()));
+                .flatMap(card -> {
+                    try {
+                        return discountCardDao.findByName(card.toUpperCase());
+                    } catch (DaoException e) {
+                        return Optional.empty();
+                    }
+                });
     }
 
-    private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException {
+    private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException, NotEnoughProductsException, DaoException {
         List<Position> positions = new ArrayList<>();
         List<String> productArguments = Arrays.stream(argsLine)
                 .filter(Predicate.not(isCard()))
@@ -67,7 +74,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             }
             positions.add(new Position(product, requiredNumber));
             product.setAvailableNumber(product.getAvailableNumber() - requiredNumber);
-            productDao.updateAvailableNumber(product);
+            productDao.update(product);
         }
         return positions;
 
