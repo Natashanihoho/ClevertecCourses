@@ -38,7 +38,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     providedCompile 'jakarta.platform:jakarta.jakartaee-web-api:9.1.0'
-    implementation 'com.itextpdf:itext7-core:7.2.2'
+    implementation 'com.itextpdf:itext7-core:7.0.4'
     implementation 'org.flywaydb:flyway-core:9.0.4'
 }
 
