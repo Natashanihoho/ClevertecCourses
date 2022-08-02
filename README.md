@@ -4,52 +4,124 @@ Software represents an application, that implements the functionality of generat
 #Non-functional requirements
 <ul>
 <li> JDK 16+;
-<li> API: HTTP, request and response message - TXT format;
+<li> API: HTTP(request - JSON, URL and response message - JSON, PDF);
 </ul>
 
 #Functional requirements
 The application must receive order from the user and generate the cash receipt with discounts, if they are available.
-It must be run from the command line.
+Also the application must receive CRUD requests.
 
-The application has several ways of execution:
+*Examples of URL request:*
 <ul>
-<li> Console
 
-    Run example: java ConsoleRunner 3-1 2-5 5-1 card5
+<li> Get receipt:   
 
-Description: java ConsoleRunner {id-number} {id-number} ... {id-number} card№</br>
-id - id of products in range 1-20,</br>
-number - number of products,</br>
-{id-number} {id-number} ... {id-number} - count of products are able to be different,</br>
-card№ - card numbers in range 1-9, and card may be missing.</br>
-<br>Cash receipt will be printed to the console.</br>
+```http request
+(GET)
+http://localhost:8080/command?type=receipt&value=2-4&value=8-1&value=card9
+http://localhost:8080/command?type=receipt&value=12-7&value=15-2&value=21-5
+```
+</li> 
 
-<br>The range of products is set in the code by a collection of objects.
+<li> Create product:
 
-<br>The order is taken from the command line.
+```http request
+(POST) 
+http://localhost:8080/command?type=product_create
+{
+        "id": 77
+        "description": "TestProduct"
+        "price": 7.77
+        "availableNumber": 10
+        "isSpecialOffer": true
+}
+```
+</li> 
 
-<li> File System
+<li> Get product by id:
 
-    Run example: java FileRunner
-Cash receipt will be printed to the file "receipt.txt" into this project.
+```http request
+(GET)
+http://localhost:8080/command?type=product_by_id&id=2
+```
+</li> 
 
-<br>The range of products is taken from the file "stockProducts.txt" into this project. 
+<li> Get all products:
 
-<br>The order is taken from the file "args.txt" into this project, it can be modified.
-<li> Web Interface
+```http request
+(GET)
+http://localhost:8080/command?type=product_all
+http://localhost:8080/command?type=product_all&page=3
+```
+</li> 
 
-    Run example: java WebRunner 
-Cash receipt will be printed to the http://localhost:8081/check?id=5&value=3&card4
+<li> Update product by id:
 
-Description: http://localhost:8081/check?{id=number}&{value=number}& ... &card№</br>
-id - id of products in range 1-20,</br>
-value - number of products,</br>
-{id=number}&{value=number}& ... &{id=number}&{value=number} - count of products are able to be different,</br>
-card№ - card numbers in range 1-9, and card may be missing.</br>
-<br>The range of products is set in the code by a collection of objects.
+```http request
+(PUT)
+http://localhost:8080/command?type=product_update&id=1
+{
+        "id": 1
+        "description": "UpdatedDescription"
+        "price": 1.00
+        "availableNumber": 10
+        "isSpecialOffer": true
+}
+```
+</li> 
 
-<br>The order is taken from the http request.
+<li> Delete product by id:
+
+```http request
+(DELETE)
+http://localhost:8080/command?type=product_delete&id=11
+```
+</li> 
+
+
+<li> Create discount card:
+
+```http request
+(POST) 
+http://localhost:8080/command?type=discount_card_create
+{
+        "name": card88
+        "discountPercent": 6
+}
+```
+</li> 
+
+<li> Get discount card by name:
+
+```http request
+(GET)
+http://localhost:8080/command?type=discount_card_by_name&name=card2
+```
+</li> 
+
+<li> Update discount card by name:
+
+```http request
+(PUT)
+http://localhost:8080/command?type=discount_card_update&name=card1
+{
+        "name": card1
+        "discountPercent": 5
+}
+```
+</li> 
+
+<li> Delete discount card by name:
+
+```http request
+(DELETE)
+http://localhost:8080/command?type=discount_card_delete&name=card8
+```
+</li> 
+
+
 </ul>
+
 
 
 
