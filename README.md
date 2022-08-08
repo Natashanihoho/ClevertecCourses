@@ -29,10 +29,9 @@ http://localhost:8080/command?type=receipt&value=12-7&value=15-2&value=21-5
 (POST) 
 http://localhost:8080/command?type=product_create
 {
-        "id": 77
-        "description": "TestProduct"
-        "price": 7.77
-        "availableNumber": 10
+        "description": "TestProduct",
+        "price": 7.77,
+        "availableNumber": 10,
         "isSpecialOffer": true
 }
 ```
@@ -61,10 +60,10 @@ http://localhost:8080/command?type=product_all&page=3
 (PUT)
 http://localhost:8080/command?type=product_update&id=1
 {
-        "id": 1
-        "description": "UpdatedDescription"
-        "price": 1.00
-        "availableNumber": 10
+        "id": 1,
+        "description": "UpdatedDescription",
+        "price": 1.00,
+        "availableNumber": 10,
         "isSpecialOffer": true
 }
 ```
@@ -85,7 +84,7 @@ http://localhost:8080/command?type=product_delete&id=11
 (POST) 
 http://localhost:8080/command?type=discount_card_create
 {
-        "name": card88
+        "cardName": card88,
         "discountPercent": 6
 }
 ```
@@ -105,7 +104,7 @@ http://localhost:8080/command?type=discount_card_by_name&name=card2
 (PUT)
 http://localhost:8080/command?type=discount_card_update&name=card1
 {
-        "name": card1
+        "cardName": card1,
         "discountPercent": 5
 }
 ```

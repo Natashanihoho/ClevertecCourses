@@ -20,9 +20,11 @@ public class CreateProduct implements ServiceConsumer {
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        try (BufferedReader bufferedReader = request.getReader()) {
+        try (BufferedReader bufferedReader = request.getReader();
+             var writer = response.getWriter()) {
             Product product = new Gson().fromJson(bufferedReader, Product.class);
-            response.setStatus(productDao.createProduct(product) ? SC_CREATED : SC_BAD_REQUEST);
+            response.setStatus(productDao.createProduct(product) != null ? SC_CREATED : SC_BAD_REQUEST);
+            writer.write(new Gson().toJson(product));
         } catch (IOException | DaoException e) {
             throw new ServiceException(e);
         }

@@ -5,10 +5,10 @@ public final class ReceiptFormatter {
     public static final String TITLE = """
                           CASH RECEIPT
 
-                     SUPERMARKET "LOLLIPOP"
-              17100 Collins Ave Sunny Isles Beach,
-                            FL 33160
-                      Tel: 37529-234-6375
+                             %s
+                             %s,
+                             %s
+                             %s
 
             Cashier: %-15s DATE: %s
                                      TIME: %s

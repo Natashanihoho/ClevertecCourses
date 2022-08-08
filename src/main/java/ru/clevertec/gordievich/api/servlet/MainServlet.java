@@ -8,16 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.flywaydb.core.Flyway;
 import ru.clevertec.gordievich.api.servlet.handling.CommandProvider;
+import ru.clevertec.gordievich.infrastructure.property.DbSetting;
+import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
 
 import java.util.function.BiConsumer;
 
-import static ru.clevertec.gordievich.infrastructure.connection.PropertiesUtil.*;
 
 @WebServlet("/command")
 public class MainServlet extends HttpServlet {
 
+    private static final DbSetting dbSetting = PropertiesUtil.getYamlFile().getDb();
+
     private static final Flyway flyway = Flyway.configure()
-            .dataSource(getDbUrl(),getDbUser(),getDbPassword())
+            .dataSource(dbSetting.getUrl(),dbSetting.getUsername(),dbSetting.getPassword())
             .baselineOnMigrate(true)
             .cleanDisabled(false)
             .load();

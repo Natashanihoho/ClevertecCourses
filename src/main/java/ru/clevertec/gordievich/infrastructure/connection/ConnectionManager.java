@@ -1,5 +1,7 @@
 package ru.clevertec.gordievich.infrastructure.connection;
 
+import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
+
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +13,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class ConnectionManager {
 
-    private static final String POOL_SIZE_KEY = "db.pool.size";
     private static final Integer DEFAULT_POOL_SIZE = 10;
     private static BlockingQueue<Connection> pool;
     private static List<Connection> sourceConnections;
@@ -25,7 +26,7 @@ public class ConnectionManager {
     }
 
     private static void initConnectionPool() {
-        var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
+        var poolSize = PropertiesUtil.getYamlFile().getDb().getPool().getSize();
         var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
         sourceConnections = new ArrayList<>(size);
@@ -55,9 +56,9 @@ public class ConnectionManager {
     private static Connection open() {
         try {
             return DriverManager.getConnection(
-                    PropertiesUtil.getDbUrl(),
-                    PropertiesUtil.getDbUser(),
-                    PropertiesUtil.getDbPassword()
+                    PropertiesUtil.getYamlFile().getDb().getUrl(),
+                    PropertiesUtil.getYamlFile().getDb().getUsername(),
+                    PropertiesUtil.getYamlFile().getDb().getPassword()
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);

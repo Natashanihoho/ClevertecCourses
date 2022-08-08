@@ -22,7 +22,7 @@ public class UpdateDiscountCard implements ServiceConsumer {
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try (BufferedReader bufferedReader = request.getReader()) {
             DiscountCard discountCard = new Gson().fromJson(bufferedReader, DiscountCard.class);
-            response.setStatus(discountCardDao.update(discountCard) ? SC_NO_CONTENT : SC_BAD_REQUEST);
+            response.setStatus(discountCardDao.update(discountCard) ? SC_OK : SC_BAD_REQUEST);
         } catch (IOException | DaoException e) {
             throw new ServiceException(e);
         }

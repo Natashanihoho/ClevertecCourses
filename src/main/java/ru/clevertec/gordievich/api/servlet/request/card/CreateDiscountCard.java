@@ -21,9 +21,11 @@ public class CreateDiscountCard implements ServiceConsumer {
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        try (BufferedReader bufferedReader = request.getReader()) {
+        try (BufferedReader bufferedReader = request.getReader();
+             var writer = response.getWriter()) {
             DiscountCard discountCard = new Gson().fromJson(bufferedReader, DiscountCard.class);
-            response.setStatus(discountCardDao.createDiscountCard(discountCard) ? SC_CREATED : SC_BAD_REQUEST);
+            response.setStatus(discountCardDao.createDiscountCard(discountCard) != null ? SC_CREATED : SC_BAD_REQUEST);
+            writer.write(new Gson().toJson(discountCard));
         } catch (IOException | DaoException e) {
             throw new ServiceException(e);
         }

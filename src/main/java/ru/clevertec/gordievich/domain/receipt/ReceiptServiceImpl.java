@@ -9,6 +9,7 @@ import ru.clevertec.gordievich.infrastructure.aspect.annotation.CustomLog;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
+import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
 
 
 import java.time.LocalDate;
@@ -39,6 +40,10 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     private String title(List<String> cashiers) {
         return TITLE.formatted(
+                PropertiesUtil.getYamlFile().getReceipt().getName(),
+                PropertiesUtil.getYamlFile().getReceipt().getAddress(),
+                PropertiesUtil.getYamlFile().getReceipt().getCode(),
+                PropertiesUtil.getYamlFile().getReceipt().getPhone(),
                 cashiers.get(new Random().nextInt(cashiers.size())),
                 LocalDate.now(),
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))

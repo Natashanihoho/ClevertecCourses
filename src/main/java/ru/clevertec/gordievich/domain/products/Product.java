@@ -10,7 +10,8 @@ import lombok.ToString;
 @Builder
 public class Product {
 
-    private int id;
+    @Setter
+    private Long id;
     private String description;
     private double price;
     @Setter

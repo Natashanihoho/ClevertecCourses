@@ -1,7 +1,5 @@
 package ru.clevertec.gordievich.infrastructure.validation;
 
-import ru.clevertec.gordievich.infrastructure.connection.PropertiesUtil;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -39,10 +37,6 @@ public class ValidatorRequest {
                     invalidDataBuilder.append(line + "\n");
                 }
             });
-        }
-
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(PropertiesUtil.get("INVALID_DATA_FILE_PATH"), StandardCharsets.UTF_8))) {
-           writer.write(invalidDataBuilder.toString());
         }
 
         return correctPositionsList;

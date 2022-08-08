@@ -18,7 +18,7 @@ public class DeleteProduct implements ServiceConsumer {
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try {
             String id = request.getParameter("id");
-            boolean deleteResult = productDao.deleteById(Integer.parseInt(id));
+            boolean deleteResult = productDao.deleteById(Long.parseLong(id));
             response.setStatus(deleteResult ? SC_NO_CONTENT : SC_BAD_REQUEST);
         } catch (DaoException e) {
             throw new ServiceException(e);

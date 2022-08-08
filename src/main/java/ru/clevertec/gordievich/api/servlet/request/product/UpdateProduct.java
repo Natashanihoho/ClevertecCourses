@@ -22,7 +22,7 @@ public class UpdateProduct implements ServiceConsumer {
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try (BufferedReader bufferedReader = request.getReader()) {
             Product product = new Gson().fromJson(bufferedReader, Product.class);
-            response.setStatus(productDao.update(product) ? SC_NO_CONTENT : SC_BAD_REQUEST);
+            response.setStatus(productDao.update(product) ? SC_OK : SC_BAD_REQUEST);
         } catch (IOException | DaoException e) {
             throw new ServiceException(e);
         }

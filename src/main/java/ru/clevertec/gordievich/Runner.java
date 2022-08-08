@@ -1,6 +1,6 @@
 package ru.clevertec.gordievich;
 
-public class WebRunner {
+public class Runner {
 
     public static void main(String[] args) {
     }
