@@ -1,0 +1,11 @@
+db:
+  url: jdbc:postgresql://localhost:5432/postgres
+  username: postgres
+  password: mama6827209
+  pool:
+    size: 5
+receipt:
+  name: SUPERMARKET "LOLLIPOP"
+  phone: 37529-234-6375
+  address: 17100 Collins Ave Sunny Isles Beach
+  code: FL 33160
