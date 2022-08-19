@@ -1,6 +1,7 @@
 package ru.clevertec.gordievich.domain.cards;
 
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.connection.ConnectionManager;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 
+@Repository
 @NoArgsConstructor(access = PRIVATE)
 public class DiscountCardDao {
 

@@ -1,8 +1,8 @@
 package ru.clevertec.gordievich.api.servlet.request.receipt;
 
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Tab;
 import com.itextpdf.layout.element.Table;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import static com.itextpdf.layout.border.Border.NO_BORDER;
 import static com.itextpdf.layout.property.TextAlignment.*;
 
+@Component
 public class ReceiptPdfFormatter {
 
     private static final String EMPTY = "";

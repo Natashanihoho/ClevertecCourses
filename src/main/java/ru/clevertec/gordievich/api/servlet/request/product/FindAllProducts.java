@@ -1,22 +1,27 @@
 package ru.clevertec.gordievich.api.servlet.request.product;
 
 import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
 import ru.clevertec.gordievich.domain.products.ProductDao;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-import static org.apache.http.HttpStatus.*;
+import static ru.clevertec.gordievich.api.servlet.handling.RequestType.PRODUCT_GET_ALL;
 
+@Component
+@RequiredArgsConstructor
 public class FindAllProducts implements ServiceConsumer {
 
-    private final ProductDao productDao = ProductDao.getInstance();
+    private final ProductDao productDao;
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -30,4 +35,10 @@ public class FindAllProducts implements ServiceConsumer {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public RequestType requestType() {
+        return PRODUCT_GET_ALL;
+    }
 }
+

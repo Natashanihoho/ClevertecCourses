@@ -2,6 +2,7 @@ package ru.clevertec.gordievich.domain.products;
 
 
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.connection.ConnectionManager;
 
@@ -16,6 +17,7 @@ import java.util.function.Function;
 
 import static lombok.AccessLevel.PRIVATE;
 
+@Repository
 @NoArgsConstructor(access = PRIVATE)
 public class ProductDao {
 

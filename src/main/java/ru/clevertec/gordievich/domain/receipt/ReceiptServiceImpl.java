@@ -1,6 +1,8 @@
 package ru.clevertec.gordievich.domain.receipt;
 
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.domain.cards.DiscountCard;
 import ru.clevertec.gordievich.domain.cards.DiscountCardDao;
 import ru.clevertec.gordievich.domain.products.Product;
@@ -22,12 +24,12 @@ import java.util.stream.Collectors;
 import static lombok.AccessLevel.PRIVATE;
 import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.*;
 
-@NoArgsConstructor(access = PRIVATE)
+@Component
+@RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private static final ReceiptServiceImpl INSTANCE = new ReceiptServiceImpl();
-    private static final DiscountCardDao discountCardDao = DiscountCardDao.getInstance();
-    private static final ProductDao productDao = ProductDao.getInstance();
+    private final DiscountCardDao discountCardDao;
+    private final ProductDao productDao;
 
     @CustomLog
     @Override
@@ -124,7 +126,4 @@ public class ReceiptServiceImpl implements ReceiptService {
         return receipt.toString();
     }
 
-    public static ReceiptServiceImpl getInstance() {
-        return INSTANCE;
-    }
 }
