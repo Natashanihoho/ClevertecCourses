@@ -1,5 +1,6 @@
 package ru.clevertec.gordievich.infrastructure.connection;
 
+import org.springframework.beans.factory.annotation.Value;
 import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
 
 import java.lang.reflect.Proxy;

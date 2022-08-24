@@ -2,6 +2,7 @@ package ru.clevertec.gordievich.api.servlet.handling;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.clevertec.gordievich.infrastructure.exceptions.ExceptionInfo;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
@@ -19,7 +20,7 @@ import java.util.function.BiConsumer;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class DispatcherServlet implements BiConsumer<HttpServletRequest, HttpServletResponse> {
 

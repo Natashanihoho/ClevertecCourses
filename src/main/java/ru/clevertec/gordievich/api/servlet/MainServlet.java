@@ -1,12 +1,15 @@
 package ru.clevertec.gordievich.api.servlet;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.api.servlet.handling.DispatcherServlet;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 
 @Component
@@ -36,7 +39,7 @@ public class MainServlet extends HttpServlet {
     }
 
     private void router(HttpServletRequest req, HttpServletResponse resp) {
-        resp.setContentType("application/json");
+        resp.setContentType(APPLICATION_JSON_VALUE);
         dispatcherServlet.accept(req, resp);
     }
 

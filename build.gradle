@@ -42,7 +42,7 @@ dependencies {
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'com.itextpdf:itext7-core:7.0.4'
     implementation 'org.flywaydb:flyway-core:9.0.4'
-    implementation 'org.yaml:snakeyaml:1.24'
+    implementation 'org.yaml:snakeyaml:1.30'
 }
 
 jar {
