@@ -1,21 +1,25 @@
 package ru.clevertec.gordievich.domain.products;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@ToString
-@Getter
+import lombok.*;
+
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
 public class Product {
 
-    @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
     private double price;
-    @Setter
+    @Column(name = "available_number")
     private int availableNumber;
+    @Column(name = "is_special_offer")
     private boolean isSpecialOffer;
 
 }
