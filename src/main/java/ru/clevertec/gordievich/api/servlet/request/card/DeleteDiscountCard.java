@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
-import ru.clevertec.gordievich.domain.cards.DiscountCardDao;
-import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
+import ru.clevertec.gordievich.domain.cards.DiscountCardRepository;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +18,16 @@ import static ru.clevertec.gordievich.api.servlet.handling.RequestType.DISCOUNT_
 @RequiredArgsConstructor
 public class DeleteDiscountCard implements ServiceConsumer {
 
-    private final DiscountCardDao discountCardDao;
+    private final DiscountCardRepository discountCardRepository;
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try {
-            String id = request.getParameter("name");
-            boolean deleteResult = discountCardDao.deleteByName(id);
-            response.setStatus(deleteResult ? SC_NO_CONTENT : SC_BAD_REQUEST);
-        } catch (DaoException e) {
+            Integer id = Integer.parseInt(request.getParameter("id"));
+            discountCardRepository.deleteById(id);
+            response.setStatus(SC_NO_CONTENT);
+        } catch (Exception e) {
+            response.setStatus(SC_BAD_REQUEST);
             throw new ServiceException(e);
         }
     }

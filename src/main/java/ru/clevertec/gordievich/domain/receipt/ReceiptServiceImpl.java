@@ -1,12 +1,11 @@
 package ru.clevertec.gordievich.domain.receipt;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.domain.cards.DiscountCard;
-import ru.clevertec.gordievich.domain.cards.DiscountCardDao;
+import ru.clevertec.gordievich.domain.cards.DiscountCardRepository;
 import ru.clevertec.gordievich.domain.products.Product;
-import ru.clevertec.gordievich.domain.products.ProductDao;
+import ru.clevertec.gordievich.domain.products.ProductRepository;
 import ru.clevertec.gordievich.infrastructure.aspect.annotation.CustomLog;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
@@ -21,15 +20,14 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static lombok.AccessLevel.PRIVATE;
 import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.*;
 
 @Component
 @RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final DiscountCardDao discountCardDao;
-    private final ProductDao productDao;
+    private final DiscountCardRepository discountCardRepository;
+    private final ProductRepository productRepository;
 
     @CustomLog
     @Override
@@ -53,16 +51,18 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     private Optional<DiscountCard> discountCard(String[] argsLine) {
-        return Arrays.stream(argsLine)
+        Optional<DiscountCard> diCard = Arrays.stream(argsLine)
                 .filter(isCard())
                 .findFirst()
                 .flatMap(card -> {
                     try {
-                        return discountCardDao.findByName(card.toUpperCase());
-                    } catch (DaoException e) {
+                        return discountCardRepository.findByName(card);
+                    } catch (Exception e) {
                         return Optional.empty();
                     }
                 });
+        System.out.println("DISCOUNT CARD: " + diCard.isPresent());
+        return diCard;
     }
 
     private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException, NotEnoughProductsException, DaoException {
@@ -74,14 +74,16 @@ public class ReceiptServiceImpl implements ReceiptService {
             String[] arg = productArgument.split("-");
             int id = Integer.parseInt(arg[0]);
             int requiredNumber = Integer.parseInt(arg[1]);
-            Product product = productDao.findById(id)
+            Product product = productRepository.findById(id)
                     .orElseThrow(() -> new UnknownIdException("Product is not found with id: " + id));
             if (product.getAvailableNumber() < requiredNumber) {
                 throw new NotEnoughProductsException("There are not enough products");
             }
             positions.add(new Position(product, requiredNumber));
             product.setAvailableNumber(product.getAvailableNumber() - requiredNumber);
-            productDao.update(product);
+            Product productToUpdate = productRepository.findById(product.getId()).orElseThrow();
+            productToUpdate.setAvailableNumber(product.getAvailableNumber());
+            productRepository.save(productToUpdate);
         }
         return positions;
 

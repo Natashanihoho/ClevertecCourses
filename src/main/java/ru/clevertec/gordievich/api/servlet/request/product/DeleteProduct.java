@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
-import ru.clevertec.gordievich.domain.products.ProductDao;
-import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
+import ru.clevertec.gordievich.domain.products.ProductRepository;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +18,16 @@ import static ru.clevertec.gordievich.api.servlet.handling.RequestType.PRODUCT_D
 @RequiredArgsConstructor
 public class DeleteProduct implements ServiceConsumer {
 
-    private final ProductDao productDao;
+    private final ProductRepository productRepository;
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try {
-            String id = request.getParameter("id");
-            boolean deleteResult = productDao.deleteById(Long.parseLong(id));
-            response.setStatus(deleteResult ? SC_NO_CONTENT : SC_BAD_REQUEST);
-        } catch (DaoException e) {
+            Integer id = Integer.parseInt(request.getParameter("id"));
+            productRepository.deleteById(id);
+            response.setStatus(SC_NO_CONTENT);
+        } catch (Exception e) {
+            response.setStatus(SC_BAD_REQUEST);
             throw new ServiceException(e);
         }
     }
