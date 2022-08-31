@@ -1,7 +1,18 @@
 package ru.clevertec.gordievich.domain.receipt;
 
-import lombok.RequiredArgsConstructor;
+import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.COMPLETION;
+import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.DISCOUNT_FIELD;
+import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.NORMAL_FIELD;
+import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.TITLE;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.function.Predicate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 import ru.clevertec.gordievich.domain.cards.DiscountCard;
 import ru.clevertec.gordievich.domain.cards.DiscountCardRepository;
 import ru.clevertec.gordievich.domain.products.Product;
@@ -12,16 +23,6 @@ import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsExcept
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
 import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
 
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.*;
-
 @Component
 @RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
@@ -29,6 +30,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     private final DiscountCardRepository discountCardRepository;
     private final ProductRepository productRepository;
 
+    @Transactional
     @CustomLog
     @Override
     public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, DaoException {
@@ -51,25 +53,15 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     private Optional<DiscountCard> discountCard(String[] argsLine) {
-        Optional<DiscountCard> diCard = Arrays.stream(argsLine)
+        return Arrays.stream(argsLine)
                 .filter(isCard())
                 .findFirst()
-                .flatMap(card -> {
-                    try {
-                        return discountCardRepository.findByName(card);
-                    } catch (Exception e) {
-                        return Optional.empty();
-                    }
-                });
-        System.out.println("DISCOUNT CARD: " + diCard.isPresent());
-        return diCard;
+                .flatMap(discountCardRepository::findFirstByCardName);
     }
 
     private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException, NotEnoughProductsException, DaoException {
         List<Position> positions = new ArrayList<>();
-        List<String> productArguments = Arrays.stream(argsLine)
-                .filter(Predicate.not(isCard()))
-                .collect(Collectors.toList());
+        List<String> productArguments = Arrays.stream(argsLine).filter(Predicate.not(isCard())).toList();
         for (String productArgument : productArguments) {
             String[] arg = productArgument.split("-");
             int id = Integer.parseInt(arg[0]);

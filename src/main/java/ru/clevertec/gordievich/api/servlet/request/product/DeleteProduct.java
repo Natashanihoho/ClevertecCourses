@@ -1,18 +1,17 @@
 package ru.clevertec.gordievich.api.servlet.request.product;
 
-import lombok.RequiredArgsConstructor;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_NO_CONTENT;
+import static ru.clevertec.gordievich.api.servlet.handling.RequestType.PRODUCT_DELETE;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
 import ru.clevertec.gordievich.domain.products.ProductRepository;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_NO_CONTENT;
-import static ru.clevertec.gordievich.api.servlet.handling.RequestType.PRODUCT_DELETE;
 
 @Component
 @RequiredArgsConstructor

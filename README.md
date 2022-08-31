@@ -90,19 +90,19 @@ http://localhost:8080/command?type=discount_card_create
 ```
 </li> 
 
-<li> Get discount card by name:
+<li> Get discount card by id:
 
 ```http request
 (GET)
-http://localhost:8080/command?type=discount_card_by_name&name=card2
+http://localhost:8080/command?type=discount_card_by_name&id=1
 ```
 </li> 
 
-<li> Update discount card by name:
+<li> Update discount card by id:
 
 ```http request
 (PUT)
-http://localhost:8080/command?type=discount_card_update&name=card1
+http://localhost:8080/command?type=discount_card_update&id=1
 {
         "cardName": card1,
         "discountPercent": 5
@@ -110,11 +110,11 @@ http://localhost:8080/command?type=discount_card_update&name=card1
 ```
 </li> 
 
-<li> Delete discount card by name:
+<li> Delete discount card by id:
 
 ```http request
 (DELETE)
-http://localhost:8080/command?type=discount_card_delete&name=card8
+http://localhost:8080/command?type=discount_card_delete&id=1
 ```
 </li> 
 

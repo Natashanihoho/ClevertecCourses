@@ -1,8 +1,5 @@
 package ru.clevertec.gordievich.infrastructure.connection;
 
-import org.springframework.beans.factory.annotation.Value;
-import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
-
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
 
 public class ConnectionManager {
 

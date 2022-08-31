@@ -1,12 +1,14 @@
 package ru.clevertec.gordievich.api.servlet.handling;
 
+import static ru.clevertec.gordievich.api.servlet.handling.HttpMethod.DELETE;
+import static ru.clevertec.gordievich.api.servlet.handling.HttpMethod.GET;
+import static ru.clevertec.gordievich.api.servlet.handling.HttpMethod.POST;
+import static ru.clevertec.gordievich.api.servlet.handling.HttpMethod.PUT;
+
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.util.Arrays;
-
-import static ru.clevertec.gordievich.api.servlet.handling.HttpMethod.*;
 
 @RequiredArgsConstructor
 @Accessors(fluent = true)

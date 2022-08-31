@@ -1,14 +1,11 @@
 package ru.clevertec.gordievich.domain.cards;
 
-
-import lombok.*;
-
 import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "discount_card")
 public class DiscountCard {
@@ -22,4 +19,5 @@ public class DiscountCard {
 
     @Column(name = "discount_percent")
     private int discountPercent;
+
 }

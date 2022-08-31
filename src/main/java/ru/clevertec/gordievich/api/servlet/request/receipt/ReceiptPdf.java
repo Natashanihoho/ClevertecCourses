@@ -1,11 +1,17 @@
 package ru.clevertec.gordievich.api.servlet.request.receipt;
 
+import static ru.clevertec.gordievich.api.servlet.handling.RequestType.RECEIPT_GET;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
 import ru.clevertec.gordievich.domain.receipt.ReceiptService;
@@ -13,13 +19,6 @@ import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import static ru.clevertec.gordievich.api.servlet.handling.RequestType.RECEIPT_GET;
 
 @Component
 @RequiredArgsConstructor

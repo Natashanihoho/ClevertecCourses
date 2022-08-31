@@ -1,14 +1,11 @@
 package ru.clevertec.gordievich.domain.products;
 
-
-import lombok.*;
-
 import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
 public class Product {

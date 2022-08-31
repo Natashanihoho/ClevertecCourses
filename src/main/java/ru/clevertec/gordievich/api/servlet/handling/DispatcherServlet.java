@@ -1,15 +1,7 @@
 package ru.clevertec.gordievich.api.servlet.handling;
 
-import com.google.gson.Gson;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import ru.clevertec.gordievich.infrastructure.exceptions.ExceptionInfo;
-import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -17,8 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
+import ru.clevertec.gordievich.infrastructure.exceptions.ExceptionInfo;
+import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 
 @Component
 @RequiredArgsConstructor

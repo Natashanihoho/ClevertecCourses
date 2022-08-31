@@ -1,15 +1,13 @@
 package ru.clevertec.gordievich.api.servlet;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import ru.clevertec.gordievich.api.servlet.handling.DispatcherServlet;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import ru.clevertec.gordievich.api.servlet.handling.DispatcherServlet;
 
 
 @Component
