@@ -1,41 +1,20 @@
 package ru.clevertec.gordievich.api.servlet;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.flywaydb.core.Flyway;
-import ru.clevertec.gordievich.api.servlet.handling.CommandProvider;
-import ru.clevertec.gordievich.infrastructure.property.DbSetting;
-import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
-import java.util.function.BiConsumer;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import ru.clevertec.gordievich.api.servlet.handling.DispatcherServlet;
 
 
-@WebServlet("/command")
+@Component
+@RequiredArgsConstructor
 public class MainServlet extends HttpServlet {
 
-    private static final DbSetting dbSetting = PropertiesUtil.getYamlFile().getDb();
-
-    private static final Flyway flyway = Flyway.configure()
-            .dataSource(dbSetting.getUrl(),dbSetting.getUsername(),dbSetting.getPassword())
-            .baselineOnMigrate(true)
-            .cleanDisabled(false)
-            .load();
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        flyway.migrate();
-        super.init(config);
-    }
-
-    @Override
-    public void destroy() {
-        flyway.clean();
-        super.destroy();
-    }
+    private final DispatcherServlet dispatcherServlet;
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -58,11 +37,8 @@ public class MainServlet extends HttpServlet {
     }
 
     private void router(HttpServletRequest req, HttpServletResponse resp) {
-        BiConsumer<HttpServletRequest, HttpServletResponse> commandProvider = CommandProvider.byEndpointAndMethod(
-                req.getParameter("type"), req.getMethod()
-        );
-        resp.setContentType("application/json");
-        commandProvider.accept(req, resp);
+        resp.setContentType(APPLICATION_JSON_VALUE);
+        dispatcherServlet.accept(req, resp);
     }
 
 

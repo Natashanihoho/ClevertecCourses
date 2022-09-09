@@ -1,17 +1,19 @@
 package ru.clevertec.gordievich.api.servlet.request.receipt;
 
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Tab;
-import com.itextpdf.layout.element.Table;
+import static com.itextpdf.layout.border.Border.NO_BORDER;
+import static com.itextpdf.layout.property.TextAlignment.CENTER;
+import static com.itextpdf.layout.property.TextAlignment.LEFT;
+import static com.itextpdf.layout.property.TextAlignment.RIGHT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
 
-import static com.itextpdf.layout.border.Border.NO_BORDER;
-import static com.itextpdf.layout.property.TextAlignment.*;
-
+@Component
 public class ReceiptPdfFormatter {
 
     private static final String EMPTY = "";

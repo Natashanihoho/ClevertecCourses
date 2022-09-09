@@ -1,26 +1,31 @@
 package ru.clevertec.gordievich.api.servlet.request.receipt;
 
+import static ru.clevertec.gordievich.api.servlet.handling.RequestType.RECEIPT_GET;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import ru.clevertec.gordievich.api.servlet.handling.RequestType;
 import ru.clevertec.gordievich.api.servlet.handling.ServiceConsumer;
 import ru.clevertec.gordievich.domain.receipt.ReceiptService;
-import ru.clevertec.gordievich.domain.receipt.ReceiptServiceImpl;
 import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
 import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
 import ru.clevertec.gordievich.infrastructure.exceptions.ServiceException;
 import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
 
-import java.io.*;
-
+@Component
+@RequiredArgsConstructor
 public class ReceiptPdf implements ServiceConsumer {
 
-    private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-    private final ReceiptPdfFormatter formatter = new ReceiptPdfFormatter();
+    private final ReceiptService receiptService;
+    private final ReceiptPdfFormatter formatter;
 
     @Override
     public void accept(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -33,10 +38,15 @@ public class ReceiptPdf implements ServiceConsumer {
             PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
             pdfDocument.setDefaultPageSize(PageSize.A4);
             Document document = new Document(pdfDocument);
-            formatter.formatReceipt(receipt).stream().forEach(table -> document.add(table));
+            formatter.formatReceipt(receipt).forEach(document::add);
             document.close();
         } catch (IOException | UnknownIdException | NotEnoughProductsException | DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public RequestType requestType() {
+        return RECEIPT_GET;
     }
 }

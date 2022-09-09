@@ -37,3 +37,5 @@ out/
 
 # Ignore Gradle build output directory
 build
+
+logs.txt

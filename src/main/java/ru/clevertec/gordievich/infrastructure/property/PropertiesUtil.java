@@ -1,10 +1,9 @@
 package ru.clevertec.gordievich.infrastructure.property;
 
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-
 import java.io.IOException;
 import java.io.InputStream;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 public class PropertiesUtil {
 
