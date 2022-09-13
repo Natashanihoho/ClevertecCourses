@@ -1,27 +1,23 @@
 package ru.clevertec.gordievich.domain.receipt;
 
-import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.COMPLETION;
-import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.DISCOUNT_FIELD;
-import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.NORMAL_FIELD;
-import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.TITLE;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import ru.clevertec.gordievich.domain.cards.DiscountCard;
+import ru.clevertec.gordievich.domain.cards.DiscountCardRepository;
+import ru.clevertec.gordievich.domain.products.Product;
+import ru.clevertec.gordievich.domain.products.ProductRepository;
+import ru.clevertec.gordievich.infrastructure.aspect.annotation.CustomLog;
+import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
+import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
-import ru.clevertec.gordievich.domain.cards.DiscountCard;
-import ru.clevertec.gordievich.domain.cards.DiscountCardRepository;
-import ru.clevertec.gordievich.domain.products.Product;
-import ru.clevertec.gordievich.domain.products.ProductRepository;
-import ru.clevertec.gordievich.infrastructure.aspect.annotation.CustomLog;
-import ru.clevertec.gordievich.infrastructure.exceptions.DaoException;
-import ru.clevertec.gordievich.infrastructure.exceptions.NotEnoughProductsException;
-import ru.clevertec.gordievich.infrastructure.exceptions.UnknownIdException;
-import ru.clevertec.gordievich.infrastructure.property.PropertiesUtil;
+
+import static ru.clevertec.gordievich.domain.receipt.ReceiptFormatter.*;
 
 @Component
 @RequiredArgsConstructor
@@ -29,11 +25,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     private final DiscountCardRepository discountCardRepository;
     private final ProductRepository productRepository;
+    private final ReceiptProperty receiptProperty;
 
     @Transactional
     @CustomLog
     @Override
-    public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException, DaoException {
+    public String interpret(String[] args) throws UnknownIdException, NotEnoughProductsException {
         String title = title(List.of("Liam Neeson", "Meryl Streep", "Kate Winslet", "Will Smith"));
         List<Position> positions = addPositionsToList(args);
         String receipt = receipt(positions, discountCard(args));
@@ -42,10 +39,10 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     private String title(List<String> cashiers) {
         return TITLE.formatted(
-                PropertiesUtil.getYamlFile().getReceipt().getName(),
-                PropertiesUtil.getYamlFile().getReceipt().getAddress(),
-                PropertiesUtil.getYamlFile().getReceipt().getCode(),
-                PropertiesUtil.getYamlFile().getReceipt().getPhone(),
+                receiptProperty.name(),
+                receiptProperty.address(),
+                receiptProperty.code(),
+                receiptProperty.phone(),
                 cashiers.get(new Random().nextInt(cashiers.size())),
                 LocalDate.now(),
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
@@ -59,7 +56,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 .flatMap(discountCardRepository::findFirstByCardName);
     }
 
-    private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException, NotEnoughProductsException, DaoException {
+    private List<Position> addPositionsToList(String[] argsLine) throws UnknownIdException, NotEnoughProductsException {
         List<Position> positions = new ArrayList<>();
         List<String> productArguments = Arrays.stream(argsLine).filter(Predicate.not(isCard())).toList();
         for (String productArgument : productArguments) {
