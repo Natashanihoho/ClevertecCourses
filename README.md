@@ -18,16 +18,16 @@ Also the application must receive CRUD requests.
 
 ```http request
 (GET)
-http://localhost:8080/command?type=receipt&value=2-4&value=8-1&value=card9
-http://localhost:8080/command?type=receipt&value=12-7&value=15-2&value=21-5
+http://localhost:8080/receipt/value=1-1&2-1
+http://localhost:8080/receipt/value=1-1&2-1&card1
 ```
 </li> 
 
 <li> Create product:
 
 ```http request
-(POST) 
-http://localhost:8080/command?type=product_create
+(POST)
+http://localhost:8080/product/create
 {
         "description": "TestProduct",
         "price": 7.77,
@@ -41,7 +41,7 @@ http://localhost:8080/command?type=product_create
 
 ```http request
 (GET)
-http://localhost:8080/command?type=product_by_id&id=2
+http://localhost:8080/product/find/1
 ```
 </li> 
 
@@ -49,8 +49,8 @@ http://localhost:8080/command?type=product_by_id&id=2
 
 ```http request
 (GET)
-http://localhost:8080/command?type=product_all
-http://localhost:8080/command?type=product_all&page=3
+http://localhost:8080/product/find_all
+http://localhost:8080/product/find_all/1
 ```
 </li> 
 
@@ -58,9 +58,8 @@ http://localhost:8080/command?type=product_all&page=3
 
 ```http request
 (PUT)
-http://localhost:8080/command?type=product_update&id=1
+http://localhost:8080/product/update/1
 {
-        "id": 1,
         "description": "UpdatedDescription",
         "price": 1.00,
         "availableNumber": 10,
@@ -73,7 +72,7 @@ http://localhost:8080/command?type=product_update&id=1
 
 ```http request
 (DELETE)
-http://localhost:8080/command?type=product_delete&id=11
+http://localhost:8080/product/delete/3
 ```
 </li> 
 
@@ -81,10 +80,10 @@ http://localhost:8080/command?type=product_delete&id=11
 <li> Create discount card:
 
 ```http request
-(POST) 
-http://localhost:8080/command?type=discount_card_create
+(POST)
+http://localhost:8080/card/create
 {
-        "cardName": card88,
+        "cardName": "card88",
         "discountPercent": 6
 }
 ```
@@ -94,7 +93,7 @@ http://localhost:8080/command?type=discount_card_create
 
 ```http request
 (GET)
-http://localhost:8080/command?type=discount_card_by_name&id=1
+http://localhost:8080/card/find/1
 ```
 </li> 
 
@@ -102,9 +101,9 @@ http://localhost:8080/command?type=discount_card_by_name&id=1
 
 ```http request
 (PUT)
-http://localhost:8080/command?type=discount_card_update&id=1
+http://localhost:8080/card/update/1
 {
-        "cardName": card1,
+        "cardName": "card1",
         "discountPercent": 5
 }
 ```
@@ -114,7 +113,7 @@ http://localhost:8080/command?type=discount_card_update&id=1
 
 ```http request
 (DELETE)
-http://localhost:8080/command?type=discount_card_delete&id=1
+http://localhost:8080/card/delete/1
 ```
 </li> 
 

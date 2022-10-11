@@ -1,15 +1,17 @@
 plugins {
     id 'java-library'
-    id 'custom-download'
     id 'io.freefair.aspectj.post-compile-weaving' version '6.4.3.1'
-    id 'war'
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 }
 
 group 'ru.clevertec'
 version '1.0-SNAPSHOT'
 
-ext {
-    runner = project.properties['runner'] ?: "Console"
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 java {
@@ -21,57 +23,18 @@ repositories {
     mavenCentral()
 }
 
-test {
-    useJUnitPlatform()
-}
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'org.slf4j:slf4j-log4j12:1.7.36'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.aspectj:aspectjtools:1.9.9.1'
     implementation 'org.codehaus.mojo:aspectj-maven-plugin:1.14.0'
-    implementation 'org.springframework:spring-context:5.3.22'
-    implementation 'org.springframework:spring-web:5.3.22'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'org.postgresql:postgresql:42.3.6'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    testCompileOnly 'org.projectlombok:lombok:1.18.24'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.itextpdf:itext7-core:7.0.4'
     implementation 'org.flywaydb:flyway-core:9.0.4'
-    implementation 'org.yaml:snakeyaml:1.30'
-    implementation 'org.hibernate:hibernate-core:5.5.6.Final'
-    implementation 'org.springframework.data:spring-data-jpa:2.7.2'
 }
-
-jar {
-    //gradle build -Prunner=Console/File/Web
-    def files = configurations.runtimeClasspath.files
-    doFirst {
-        println "$project.ext.runner"
-        manifest {
-            def jars = files.collect { "lib/$it.name" }
-            attributes 'Main-Class': "ru.clevertec.gordievich.$project.ext.runner" + "Runner",
-                    'Class-Path': jars.join(' ')
-        }
-    }
-    doLast {
-        copy {
-            from(files)
-            into("$buildDir/libs/lib")
-        }
-    }
-}
-
-war {
-    archiveName 'myProject.war'
-}
-
-
-jar.dependsOn downloadFromGitHub
-downloadFromGitHub.dependsOn processResources
 
 
